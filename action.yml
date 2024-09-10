@@ -28,6 +28,9 @@ inputs:
     description: 'Docker Network ID'
     default: ${{ job.container.network }}
     required: false
+  context_variables:
+    description: 'json format key value pairs injected as env vars'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
