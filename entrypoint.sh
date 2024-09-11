@@ -13,7 +13,6 @@ if [[ -n "${INPUT_CONTEXT_VARIABLES}" ]]; then
         INPUT_OPTIONS="$INPUT_OPTIONS -e $key=$value"
         echo DONE $key
     done < <(echo "$INPUT_CONTEXT_VARIABLES" | jq -r 'to_entries|map("\(.key)=\(.value|tostring|@sh)")|.[]')
-    
 fi
-echo $INPUT_OPTIONS
+
 exec docker run -v "/var/run/docker.sock":"/var/run/docker.sock" $INPUT_OPTIONS --entrypoint=$INPUT_SHELL $INPUT_IMAGE -c "${INPUT_RUN//$'\n'/;}"
