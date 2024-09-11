@@ -9,10 +9,12 @@ if [ ! -z $INPUT_DOCKER_NETWORK ]; then
 fi
 
 if [[ -n "${INPUT_CONTEXT_VARIABLES}" ]]; then
-    set -a
-    source <(echo -e "$INPUT_CONTEXT_VARIABLES" | jq -r 'to_entries|map("export \(.key)=\(.value|tostring|@sh)")|.[]')
-    set +a;
-fi    
+    while IFS="=" read -r key value; do
+        INPUT_OPTIONS="$INPUT_OPTIONS -e $key=$value"
+        echo DONE $key
+    done < <(echo "$INPUT_CONTEXT_VARIABLES" | jq -r 'to_entries|map("export \(.key)=\(.value|tostring|@sh)")|.[]')
+    
+fi
 
 echo $ENV
 exec docker run -v "/var/run/docker.sock":"/var/run/docker.sock" $INPUT_OPTIONS --entrypoint=$INPUT_SHELL $INPUT_IMAGE -c "${INPUT_RUN//$'\n'/;}"
