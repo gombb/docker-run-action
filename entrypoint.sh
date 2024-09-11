@@ -12,7 +12,7 @@ if [[ -n "${INPUT_CONTEXT_VARIABLES}" ]]; then
     while IFS="=" read -r key value; do
         INPUT_OPTIONS="$INPUT_OPTIONS -e $key=$value"
         echo DONE $key
-    done < <(echo "$INPUT_CONTEXT_VARIABLES" | jq -r 'to_entries|map("export \(.key)=\(.value|tostring|@sh)")|.[]')
+    done < <(echo "$INPUT_CONTEXT_VARIABLES" | jq -r 'to_entries|map("\(.key)=\(.value|tostring|@sh)")|.[]')
     
 fi
 echo $INPUT_OPTIONS
