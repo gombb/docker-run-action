@@ -16,7 +16,7 @@ if [[ -n "${INPUT_CONTEXT_VARIABLES}" ]]; then
 fi
 echo $INPUT_OPTIONS
 # exec docker run -v "/var/run/docker.sock":"/var/run/docker.sock" $INPUT_OPTIONS $INPUT_IMAGE --entrypoint=$INPUT_SHELL -c "${INPUT_RUN//$'\n'/;}"
-exec docker run -v "/var/run/docker.sock":"/var/run/docker.sock" $INPUT_OPTIONS $INPUT_IMAGE
+eval docker run -v "/var/run/docker.sock":"/var/run/docker.sock" $INPUT_OPTIONS $INPUT_IMAGE
 # DOCKER_CMD="docker run -v /var/run/docker.sock:/var/run/docker.sock $INPUT_OPTIONS"
 
 # if [ -n "$INPUT_SHELL" ]; then
