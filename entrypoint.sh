@@ -15,4 +15,18 @@ if [[ -n "${INPUT_CONTEXT_VARIABLES}" ]]; then
     done < <(echo "$INPUT_CONTEXT_VARIABLES" | jq -r 'to_entries|map("\(.key)=\(.value|tostring|@sh)")|.[]')
 fi
 
-exec docker run -v "/var/run/docker.sock":"/var/run/docker.sock" $INPUT_OPTIONS --entrypoint=$INPUT_SHELL $INPUT_IMAGE -c "${INPUT_RUN//$'\n'/;}"
+# exec docker run -v "/var/run/docker.sock":"/var/run/docker.sock" $INPUT_OPTIONS $INPUT_IMAGE --entrypoint=$INPUT_SHELL -c "${INPUT_RUN//$'\n'/;}"
+exec docker run -v "/var/run/docker.sock":"/var/run/docker.sock" $INPUT_OPTIONS $INPUT_IMAGE
+# DOCKER_CMD="docker run -v /var/run/docker.sock:/var/run/docker.sock $INPUT_OPTIONS"
+
+# if [ -n "$INPUT_SHELL" ]; then
+#     DOCKER_CMD="$DOCKER_CMD --entrypoint=$INPUT_SHELL"
+# fi
+
+# if [ -n "$INPUT_RUN" ]; then
+#     DOCKER_CMD="$DOCKER_CMD $INPUT_IMAGE -c \"${INPUT_RUN//$'\n'/;}\""
+# else
+#     DOCKER_CMD="$DOCKER_CMD $INPUT_IMAGE"
+# fi
+
+# eval $DOCKER_CMD
